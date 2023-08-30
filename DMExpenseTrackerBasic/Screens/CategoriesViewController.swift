@@ -11,7 +11,7 @@ import UIKit
  1.1 Create the user interface. See the provided screenshot for how the UI should look. Feel free to customize the colors, font, etc.
  1.2 Use the constants in the `Constants` file to assign the tableviews' reuse IDs and the second screen's storyboard ID.
  */
-class CategoriesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class CategoriesViewController: UIViewController {
     /**
      2.1 Connect the UITableView to the code.
      */
@@ -23,15 +23,13 @@ class CategoriesViewController: UIViewController, UITableViewDelegate, UITableVi
      
      We will assign the correct data to the variables soon.
      */
-    var expensesByCategory: [String: [Expense]] = [:]
-    var categories: [String] = []
+    var expensesByCategory = [String: [Expense]]()
+    var categories = [String]()
     /**
      8.1 Call the `configureViewController` and `configureTableView` functions.
      */
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.delegate = self
-        tableView.dataSource = self
         configureViewController()
         configureTableView()
     }
@@ -43,6 +41,7 @@ class CategoriesViewController: UIViewController, UITableViewDelegate, UITableVi
      4.4 Use `expensesByCategory` to get an array of categories and assign the result to `categories`.
      */
     func configureViewController() {
+        title = "CategoriesViewController"
         expensesByCategory = ExpenseHelper.getExpensesByCategory(for: Expense.expenses)
         categories = Array(expensesByCategory.keys)
     }
@@ -53,25 +52,36 @@ class CategoriesViewController: UIViewController, UITableViewDelegate, UITableVi
      5.2 Implement the `didSelectRowAt` function. Tapping on a cell should transition the user to the second screen. You may find the following article helpful: https://www.hackingwithswift.com/example-code/uikit/how-to-use-dependency-injection-with-storyboards.
     */
     func configureTableView() {
-        
+        tableView.delegate = self
+        tableView.dataSource = self
     }
-    
+}
+
+extension CategoriesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection: Int) -> Int {
         return categories.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.categoryReuseID, for: indexPath)
+        let category = categories[indexPath.row]
+        var content = cell.defaultContentConfiguration()
+        
+        content.text = category
+        content.textProperties.color = .cyan
+        cell.contentConfiguration = content
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         var selectedCategory = categories[indexPath.row]
         var arrayOfExpenses = expensesByCategory[selectedCategory]!
-//        guard let storyboard?.instantiateViewController(identifier: "ExpensesStoryboard", creator: { coder in
-//            return ExpensesViewController(coder: coder, for: selectedCategory, expenses: arrayOfExpenses)
-//        }) else {
-//            fatalError("Failed to load EditUserViewController from storyboard.")
-//        }
+        guard let vc = storyboard?.instantiateViewController(identifier: Constants.expensesStoryboardID, creator: { coder in
+            return ExpensesViewController(coder: coder, category: selectedCategory, expenses: arrayOfExpenses)
+        }) else {
+            fatalError("Failed to load ExpensesViewController from storyboard.")
+        }
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

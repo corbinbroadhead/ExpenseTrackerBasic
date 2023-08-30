@@ -20,9 +20,9 @@ class ExpensesViewController: UIViewController {
      */
     var category: String
     var expensesArr: [Expense]
-    init?(coder: NSCoder, for category: String, expenses: [Expense]) {
+    init?(coder: NSCoder, category: String, expenses: [Expense]) {
         self.category = category
-        expensesArr = expenses
+        self.expensesArr = expenses
         super.init(coder: coder)
     }
     
