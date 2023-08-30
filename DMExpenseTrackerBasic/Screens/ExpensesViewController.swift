@@ -12,12 +12,23 @@ class ExpensesViewController: UIViewController {
     /**
      6.1 Connect the UITableView and UILabel to the code.
      */
-    
+    @IBOutlet weak var expensesTableView: UITableView!
+    @IBOutlet weak var expenseLabel: UILabel!
     /**
      7.1 Create a String variable for the category and an `[Expense]` variable for the expenses.
      7.2 Create an initializer to initialize the two variables. You may find the following article helpful: https://www.hackingwithswift.com/example-code/uikit/how-to-use-dependency-injection-with-storyboards.
      */
+    var category: String
+    var expensesArr: [Expense]
+    init?(coder: NSCoder, for category: String, expenses: [Expense]) {
+        self.category = category
+        expensesArr = expenses
+        super.init(coder: coder)
+    }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     /**
      12.1 Call the `configureViewController` and `configureTableView` functions.
      */

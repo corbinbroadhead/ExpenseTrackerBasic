@@ -45,10 +45,10 @@
             </objects>
             <point key="canvasLocation" x="1509" y="-56"/>
         </scene>
-        <!--View Controller-->
+        <!--Expenses View Controller-->
         <scene sceneID="o8Q-gY-zjz">
             <objects>
-                <viewController storyboardIdentifier="ExpensesStoryboard" id="dED-AH-Kcc" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ExpensesStoryboard" id="dED-AH-Kcc" customClass="ExpensesViewController" customModule="DMExpenseTrackerBasic" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="HPu-mv-X8P">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -96,6 +96,10 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="heF-6M-grE"/>
+                    <connections>
+                        <outlet property="expenseLabel" destination="opK-Y5-XaI" id="cLM-d9-Olw"/>
+                        <outlet property="expensesTableView" destination="n4S-Cz-MjZ" id="oly-kl-Zlf"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mbs-c7-raI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
