@@ -8,7 +8,7 @@
 import UIKit
 
 class ExpensesViewController: UIViewController {
-    
+    @IBOutlet weak var tableView: UITableView!
     /**
      6.1 Connect the UITableView and UILabel to the code.
      */
@@ -34,14 +34,19 @@ class ExpensesViewController: UIViewController {
      */
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        configureViewController()
+        configureTableView()
     }
     
     /**
      9.1 Have the UILabel display the amount of money the user spent for the selected category. For example, "You spent $25 on entertainment.".
      */
     func configureViewController() {
-        
+        var totalSpent = Double()
+        for expense in expensesArr {
+            totalSpent += expense.amount
+        }
+        expenseLabel.text = "You spent $\(totalSpent) on \(category)."
     }
     
     /**
@@ -49,6 +54,22 @@ class ExpensesViewController: UIViewController {
      10.2 Configure the tableview to display the correct data.
      */
     func configureTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+    }
+}
+
+extension ExpensesViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return expensesArr.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.expenseReuseID, for: indexPath) as! ExpenseCell
+        let expense = expensesArr[indexPath.row]
+        cell.set(expense: expense)
+
         
+        return cell
     }
 }

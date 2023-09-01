@@ -42,7 +42,7 @@ class CategoriesViewController: UIViewController {
      */
     func configureViewController() {
         title = "CategoriesViewController"
-        expensesByCategory = ExpenseHelper.getExpensesByCategory(for: Expense.expenses)
+        expensesByCategory = ExpenseHelper.getExpensesByCategory(arr: Expense.expenses)
         categories = Array(expensesByCategory.keys)
     }
     
@@ -68,15 +68,14 @@ extension CategoriesViewController: UITableViewDelegate, UITableViewDataSource {
         var content = cell.defaultContentConfiguration()
         
         content.text = category
-        content.textProperties.color = .cyan
         cell.contentConfiguration = content
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var selectedCategory = categories[indexPath.row]
-        var arrayOfExpenses = expensesByCategory[selectedCategory]!
+        let selectedCategory = categories[indexPath.row]
+        let arrayOfExpenses = expensesByCategory[selectedCategory]!
         guard let vc = storyboard?.instantiateViewController(identifier: Constants.expensesStoryboardID, creator: { coder in
             return ExpensesViewController(coder: coder, category: selectedCategory, expenses: arrayOfExpenses)
         }) else {
